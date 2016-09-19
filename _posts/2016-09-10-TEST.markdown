@@ -10,3 +10,6 @@ category:  project1
 ## HTML
 
 Can write the whole post or sections in HTML for very specific needs. [For the advanced user or the code savvy.]
+mysql> source /home/ExIS/war/h_capp.sql;
+mysql> grant all privileges on exapp.* to ExIS@'localhost' identified by '1245exis'
+mysql> alter database dbname character set utf8;

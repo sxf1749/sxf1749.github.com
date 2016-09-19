@@ -1,0 +1,12 @@
+---
+layout:     post1
+title:      New Post1
+author:     sxf
+tags: 		post template
+subtitle:  	Some Short Description of Post
+category:  project1
+---
+<!-- Start Writing Below in Markdown -->
+## HTML
+
+Can write the whole post or sections in HTML for very specific needs. [For the advanced user or the code savvy.]

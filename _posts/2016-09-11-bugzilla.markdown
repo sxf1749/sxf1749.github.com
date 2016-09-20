@@ -1,411 +1,216 @@
-**You must install Linux::Pid for Apache::SizeLimit to work**
+---
+layout:     post
+title:      bugzilla enhancement
+author:     sxf
+tags: 		post template
+subtitle:  	add img function
+category:  project2
+---
+<!-- Start Writing Below in Markdown -->
 
- 
+**You must install Linux::Pid for Apache::SizeLimit to work**
 
 **comment.html.tmpl**
 
- 
+[%# This Source Code Form is subject to the terms of the Mozilla Public
+  # License, v. 2.0. If a copy of the MPL was not distributed with this
+  # file, You can obtain one at http://mozilla.org/MPL/2.0/.
+  #
+  # This Source Code Form is "Incompatible With Secondary Licenses", as
+  # defined by the Mozilla Public License, v. 2.0.
+  #%]
 
-[%\# This Source Code Form is subject to the terms of the Mozilla Public
-
-  \# License, v. 2.0. If a copy of the MPL was not distributed with this
-
-  \# file, You can obtain one at http://mozilla.org/MPL/2.0/.
-
-  \#
-
-  \# This Source Code Form is "Incompatible With Secondary Licenses", as
-
-  \# defined by the Mozilla Public License, v. 2.0.
-
-  \#%]
-
- 
-
-[%\# INTERFACE:
-
-  \#
-
-  \# This template supports the same parameters as global/textarea.html.tmpl
-
-  \# with the exception of "name" and "id", which will always be "comment".
-
-  \#%]
-
-\<script type="text/javascript"\>
-
+[%# INTERFACE:
+  #
+  # This template supports the same parameters as global/textarea.html.tmpl
+  # with the exception of "name" and "id", which will always be "comment".
+  #%]
+<script type="text/javascript">
 ;(function(window,document){
-
     var myUpload = function(option) {
-
         var file,
-
             fd = new FormData(),
-
             xhr = new XMLHttpRequest(),
-
             loaded, tot, per, uploadUrl,input;
-
  
-
         input = document.createElement("input");
-
         input.setAttribute('id',"dataTempFile");
-
         input.setAttribute('type',"file");
-
         input.setAttribute('name',"dataTempFile");
-
  
-
         input.click();
-
  
-
         uploadUrl = option.uploadUrl;
-
         callback = option.callback;
-
         uploading = option.uploading;
-
         beforeSend = option.beforeSend;
-
  
-
         input.onchange= function(){
-
             file = input.files[0];
-
             if(beforeSend instanceof Function){
-
                 if(beforeSend(file) === false){
-
                     return false;
-
                 }
-
             }
-
             
-
             fd.append("dataTempFile", file);
-
  
-
             xhr.onreadystatechange = function() {
-
                 if (xhr.readyState == 4 && xhr.status == 200) {
-
                     if(callback instanceof Function){
-
                         callback(xhr.responseText);
-
                     }
-
                 }
-
             }
-
  
-
             xhr.upload.onprogress = function(evt) {
-
                 loaded = evt.loaded;
-
                 tot = evt.total;
-
-                per = Math.floor(100 \* loaded / tot);
-
+                per = Math.floor(100 * loaded / tot);
                 if(uploading instanceof Function){
-
                     uploading(per);
-
                 }
-
             };
-
  
-
             xhr.open("post", uploadUrl);
-
             xhr.send(fd);
-
         }
-
     };
-
  
-
     window.myUpload = myUpload;
-
 })(window,document);
-
 function uploadTempFile(){
-
    
-
     myUpload({
-
- 
 
     uploadUrl: "uploadTF.cgi",
 
- 
-
     beforeSend: function(file) {
-
        
-
     },
-
- 
 
     callback: function(res) {
-
         var box = document.getElementById('comment');
-
-        box.value = box.value + '\<img src="img/'+res+'" /\>';
-
+        box.value = box.value + '<img src="img/'+res+'" />';
     },
 
- 
-
     uploading: function(res) {
-
  
-
     }
-
 });
 
- 
-
 }
-
-\</script\>
-
-[% IF feature\_enabled('jsonrpc') %]
-
-  \<div id="comment\_tabs" role="tablist"\>
-
-    \<div id="comment\_tab" class="comment\_tab active\_comment\_tab"
-
+</script>
+[% IF feature_enabled('jsonrpc') %]
+  <div id="comment_tabs" role="tablist">
+    <div id="comment_tab" class="comment_tab active_comment_tab"
           role="tab" aria-selected="true"
-
-          onclick="show\_comment\_edit()"\>Comment\</div\>
-
-    \<div id="comment\_preview\_tab" class="comment\_tab"
-
+          onclick="show_comment_edit()">Comment</div>
+    <div id="comment_preview_tab" class="comment_tab"
           role="tab" aria-selected="false"
-
-          onclick="show\_comment\_preview([% bug.id FILTER none %])"\>Preview\</div\>
-
-    \<div id="comment\_upload\_tab" class="comment\_tab"
-
-          role="tab"\>\<input type="button" id="dataTempFileB" name="dataTempFileB" size="50" onclick="uploadTempFile()" value="IMG"\>\</div\>     
-
+          onclick="show_comment_preview([% bug.id FILTER none %])">Preview</div>
+    <div id="comment_upload_tab" class="comment_tab"
+          role="tab"><input type="button" id="dataTempFileB" name="dataTempFileB" size="50" onclick="uploadTempFile()" value="IMG"></div>     
          
-
-  \</div\>
-
+  </div>
 [% END %]
-
- 
 
 [% INCLUDE global/textarea.html.tmpl
-
    name = "comment"
-
    id   = "comment"
-
 %]
 
- 
-
-[% IF feature\_enabled('jsonrpc') %]
-
-  \<div id="comment\_preview" class="bz\_default\_hidden bz\_comment"\>
-
-    \<div id="comment\_preview\_loading" class="bz\_default\_hidden"\>Generating Preview...\</div\>
-
-    \<div id="comment\_preview\_error" class="bz\_default\_hidden"\>\</div\>
-
-    \<pre id="comment\_preview\_text" class="bz\_comment\_text"\>\</pre\>
-
-  \</div\>
-
+[% IF feature_enabled('jsonrpc') %]
+  <div id="comment_preview" class="bz_default_hidden bz_comment">
+    <div id="comment_preview_loading" class="bz_default_hidden">Generating Preview...</div>
+    <div id="comment_preview_error" class="bz_default_hidden"></div>
+    <pre id="comment_preview_text" class="bz_comment_text"></pre>
+  </div>
 [% END %]
-
  
-
- 
 
 **uploadTF.cgi**
 
- 
-
-\#!/usr/bin/perl -T
-
-\# This Source Code Form is subject to the terms of the Mozilla Public
-
-\# License, v. 2.0. If a copy of the MPL was not distributed with this
-
-\# file, You can obtain one at http://mozilla.org/MPL/2.0/.
-
-\#
-
-\# This Source Code Form is "Incompatible With Secondary Licenses", as
-
-\# defined by the Mozilla Public License, v. 2.0.
-
- 
+#!/usr/bin/perl -T
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# This Source Code Form is "Incompatible With Secondary Licenses", as
+# defined by the Mozilla Public License, v. 2.0.
 
 use 5.10.1;
-
 use strict;
-
 use warnings;
-
- 
 
 use lib qw(. lib);
 
- 
-
 use Bugzilla;
-
 use Bugzilla::Constants;
-
 use Bugzilla::Error;
-
 use Data::UUID ();
-
 use Encode;
 
- 
-
-my \$cgi = Bugzilla-\>cgi;
-
-my \$user = Bugzilla-\>login(LOGIN\_REQUIRED);
-
-my \$dir = '/var/www/html/bugzilla/img';
-
-my \$file = \$cgi-\>param('dataTempFile');
-
-my \$uuid=Data::UUID-\>new-\>create\_str;
-
-my \$name = ".jpg";
-
-    if (\$file =\~ /([\^\\/\\\\]+)\$/)
-
+my $cgi = Bugzilla->cgi;
+my $user = Bugzilla->login(LOGIN_REQUIRED);
+my $dir = '/var/www/html/bugzilla/img';
+my $file = $cgi->param('dataTempFile');
+my $uuid=Data::UUID->new->create_str;
+my $name = ".jpg";
+    if ($file =~ /([^\/\\]+)$/)
     {
-
-        \$name=\$uuid."\_".\$1;
-
+        $name=$uuid."_".$1;
     }
-
     else
-
     {
-
-        \$name=\$uuid."\_".\$file;
-
+        $name=$uuid."_".$file;
     }
-
-open(OUTFILE, "\>\$dir/\$name") or print '0001';
-
+open(OUTFILE, ">$dir/$name") or print '0001';
 binmode(OUTFILE);
-
-while (read(\$file, my \$buffer, 1024)) {
-
-        print OUTFILE \$buffer;
-
+while (read($file, my $buffer, 1024)) {
+        print OUTFILE $buffer;
 }
-
 close(OUTFILE);
-
-print \$cgi-\>header();
-
-print Encode::decode\_utf8(\$name);
-
+print $cgi->header();
+print Encode::decode_utf8($name);
  
 
- 
-
 **comments.html.tmpl**
-
 .......
-
-\<script\>
-
+<script>
 function showOrg(obj){
-
         //obj.parentElement.childNodes[1].style.display="block";
-
         var me = obj;
-
         var p = me.parentElement;
-
         var cs = p.children;
-
         if (cs[2].style.display=='block'){
-
                 cs[2].style.display='none';
-
         }else{
-
                 cs[2].style.display='block';
-
         }
-
 }
-
-\</script\>
-
+</script>
 ........
-
-\<div\>
-
-  [%- comment\_text -%]
-
-\</div\>
-
-\<a href="javascript:" onClick="showOrg(this)" \>Org\</a\>
-
-\<pre style="display:none"\>
-
-[%- comment\_text FILTER quoteUrls(bug, comment) -%]
-
-\</pre\>
-
+<div>
+  [%- comment_text -%]
+</div>
+<a href="javascript:" onClick="showOrg(this)" >Org</a>
+<pre style="display:none">
+[%- comment_text FILTER quoteUrls(bug, comment) -%]
+</pre>
 .......
-
- 
 
 **Template.pm**
-
 ......
-
 sub quoteUrls {
-
 ....
-
-    for (my \$i = \$\#things; \$i \>= 0; \$i--) {
-
-        \$text =\~ s/\\x{FDD2}(\$i)\\x{FDD3}/\$things[\$i]/eg;
-
+    for (my $i = $#things; $i >= 0; $i--) {
+        $text =~ s/\x{FDD2}($i)\x{FDD3}/$things[$i]/eg;
     }
-
-        \$text =\~ s/\\[img src=\&quot;/\<img src="/g;
-
-        \$text =\~ s/\&quot; width=98%\\/\\]/" width=98%\\/\>/g;
-
-    return \$text;
-
+        $text =~ s/\[img src=&quot;/<img src="/g;
+        $text =~ s/&quot; width=98%\/\]/" width=98%\/>/g;
+    return $text;
 }
 
- 
-
 ./jobqueue.pl install
-
 ./jobqueue.pl start

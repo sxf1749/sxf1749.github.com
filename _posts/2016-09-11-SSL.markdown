@@ -1,0 +1,31 @@
+---
+layout:     post
+title:      SSL
+author:     sxf
+tags: 		post template
+subtitle:  	
+category:  project2
+---
+<!-- Start Writing Below in Markdown -->
+
+**rehash known\_hosts**
+
+ssh-keygen -Hf .ssh/known\_hosts
+
+ 
+
+**openssh known\_hosts forma**t
+
+Each line in these files contains the following fields, and the fields are separated by spaces: 
+
+-   For RSA1 from the identity.pub file:
+
+hostnames, bits, exponent, modulus, comment.
+
+-   For RSA, DSA, or ECDSA from the id\_rsa.pub, id\_dsa.pub, or id\_ecdsa.pub files:
+
+hostnames, marker (optional), key-type, public-key, comment
+
+-   For RSA or DSA from the key ring:
+
+hostnames, zos-key-ring-label="KeyRingOwner/KeyRingName label"

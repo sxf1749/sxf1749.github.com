@@ -1,0 +1,15 @@
+---
+layout:     post
+title:      jstack
+author:     sxf
+tags: 		java linux it
+subtitle:  	
+category:  project2
+---
+<!-- Start Writing Below in Markdown -->
+
+    top (get PID)
+    ps aux | grep PID
+    ps -mp PID -o THREAD,tid,time (get thread id)
+    printf "%x\n" tid
+    jstack PID |grep tid -A 30

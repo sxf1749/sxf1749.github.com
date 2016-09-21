@@ -2,7 +2,7 @@
 layout:     post
 title:      bugzilla enhancement
 author:     sxf
-tags: 		post template
+tags: 		dev it
 subtitle:  	add img function
 category:  project2
 ---
